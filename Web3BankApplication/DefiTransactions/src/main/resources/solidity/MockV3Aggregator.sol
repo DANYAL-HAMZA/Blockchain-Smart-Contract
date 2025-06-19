@@ -66,7 +66,5 @@ contract MockV3Aggregator {
         );
     }
 
-    function description() external pure returns (string memory) {
-        return "v0.6/tests/MockV3Aggregator.sol";
-    }
+
 }

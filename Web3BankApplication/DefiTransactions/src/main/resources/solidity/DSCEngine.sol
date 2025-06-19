@@ -31,7 +31,7 @@ import {AggregatorV3Interface} from "./AggregatorV3Interface.sol";
 import {ReentrancyGuard} from "./ReentrancyGuard.sol";
 import {Ownable} from "./Ownable.sol";
 import {Pausable} from "./Pausable.sol";
-import "./OracleLib.sol";
+import {OracleLib} from "./OracleLib.sol";
 
 /*
  * @title DSCEngine
@@ -162,7 +162,7 @@ import "./OracleLib.sol";
     s_priceFeeds[tokenAddresses[i]] = priceFeedAddresses[i];
     s_collateralTokens.push(tokenAddresses[i]);
     }
-i_dsc = DecentralizedCoin(dscAddress);
+i_dsc = new DecentralizedCoin();
 
     }
 

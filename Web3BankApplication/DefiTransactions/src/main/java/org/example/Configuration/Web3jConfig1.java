@@ -6,9 +6,11 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.web3j.crypto.Credentials;
 
+import org.web3j.model.DSCEngine;
 import org.web3j.model.DecentralizedCoin;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 
 import java.math.BigInteger;
@@ -53,6 +55,10 @@ Note: Ether (ETH) is the native currency of the Ethereum network and does not ha
            // String privateKey = env.getProperty("PRIVATE_KEY"); // Use a more secure environment variable name
             return Credentials.create(privateKey);
         }
+
+
+
+
 
     }
 

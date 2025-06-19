@@ -19,8 +19,10 @@ import java.util.List;
 public class DeploymentClass {
 
   private final Web3j web3j;
-
     private final Credentials credentials;
+
+    String dscAddress;
+
 
 
 
@@ -41,30 +43,43 @@ public class DeploymentClass {
 
     );
 
-    @Autowired
 
+@Autowired
     public DeploymentClass(Web3j web3j, Credentials credentials) {
         this.web3j = web3j;
         this.credentials = credentials;
 
+
     }
 
-    public String deploy() throws Exception {
-        DecentralizedCoin decentralizedCoin = DecentralizedCoin.deploy(web3j,credentials,new DefaultGasProvider()).send();
 
-         String dscAddress = decentralizedCoin.getContractAddress();
+    public List<String> deploy() throws Exception {
 
 
-         decentralizedCoin.transferOwnership(dscAddress);
+        DecentralizedCoin decentralizedCoin = DecentralizedCoin.deploy(web3j, credentials, new DefaultGasProvider()).send();
+        if(decentralizedCoin.isValid()){
+            dscAddress = decentralizedCoin.getContractAddress();
+
+        } else {
+            System.out.println("unable to deploy stable coin");
+        }
+
+
         TransactionReceipt transactionReceipt =
                 DSCEngine.deploy(web3j,credentials, new DefaultGasProvider(),tokenAddresses,priceFeedAddresses,dscAddress).send().getTransactionReceipt().get();
+        decentralizedCoin.transferOwnership(transactionReceipt.getContractAddress());
 
-        return transactionReceipt.getContractAddress();
+
+        return List.of(dscAddress,transactionReceipt.getContractAddress());
+
+
+
     }
     @PostConstruct
     public void init() throws Exception {
-        String contractAddress = deploy();
-        System.out.println("Smart contract deployed at:" + contractAddress);
+        List<String> contractAddresses = deploy();
+        System.out.println("The token address is :" + contractAddresses.get(0) + "and the DSCEngine a" +
+                "address is :" + contractAddresses.get(1));
     }
     public static void main(String[] args){
         SpringApplication.run(DeploymentClass.class,args);

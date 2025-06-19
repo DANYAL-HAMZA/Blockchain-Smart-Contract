@@ -16,8 +16,9 @@ library OracleLib {
     error OracleLib__StalePrice();
 
     uint256 private constant TIMEOUT = 3 hours;
+AggregatorV3Interface public  chainlinkFeed;
 
-    function staleCheckLatestRoundData(AggregatorV3Interface chainlinkFeed)
+    function staleCheckLatestRoundData()
         public
         view
         returns (uint80, int256, uint256, uint256, uint80)
